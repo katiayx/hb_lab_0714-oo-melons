@@ -3,13 +3,15 @@
 class AbstractMelonOrder(object):
     """calculate cost and shipping status for domestic and international melon orders."""
 
-    def __init__(self, species, qty, tax = 0.07):
+    def __init__(self, species, qty, tax = None, country_code = None):
         """ """
         self.species = species
         self.qty = qty
         self.shipped = False
-        self.tax = tax
-        print "The tax is currently set as {:f}".format(tax)
+        if tax:
+            self.tax = tax
+        if country_code:
+            self.country_code = country_code
 
     def get_total(self):
         """Calculate price."""
@@ -25,41 +27,23 @@ class AbstractMelonOrder(object):
 
 
 class DomesticMelonOrder(AbstractMelonOrder):
-    """A domestic (in the US) melon order."""
+    """A domestic (in the US) melon order, where tax is 0.08."""
 
-    def __init__(self, species, qty):
-        """Initialize melon order attributes"""
-
-        super(DomesticMelonOrder, self).__init__(species, qty, 0.08)
-        self.order_type = "domestic"
-        # self.tax = 0.08
-
-
-    # def get_total(self):
-    #     """Calculate price."""
-
-    #     base_price = 5
-    #     total = (1 + self.tax) * self.qty * base_price
-    #     return total
-
-    # def mark_shipped(self):
-    #     """Set shipped to true."""
-
-    #     self.shipped = True
+    tax = 0.08
+    order_type = "domestic"
+    country_code = "USA"
 
 
 class InternationalMelonOrder(AbstractMelonOrder):
-    """An international (non-US) melon order."""
+    """An international (non-US) melon order, where tax is 0.17."""
 
-    def __init__(self, species, qty, country_code,):
-        """Initialize melon order attributes"""
+    tax = 0.17    
+    order_type = "international"
+    # country_code = None
 
-        super(InternationalMelonOrder, self).__init__(species, qty, 0.17)
-        self.country_code = country_code
-        self.order_type = "international"
-        # self.tax = 0.17
-
-    def get_country_code(self):
+    def get_country_code(self, country_code):
         """Return the country code."""
+
+        self.country_code = country_code
 
         return self.country_code
